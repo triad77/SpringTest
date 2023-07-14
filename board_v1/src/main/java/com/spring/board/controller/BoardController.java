@@ -1,15 +1,14 @@
 package com.spring.board.controller;
  
-import java.util.List;
- 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
- 
+
+import com.spring.board.common.ResultUtil;
 import com.spring.board.dto.BoardDto;
 import com.spring.board.form.BoardForm;
 import com.spring.board.service.BoardService;
@@ -31,12 +30,12 @@ public class BoardController {
     /** 게시판 - 목록 조회  */
     @RequestMapping(value = "/getBoardList")
     @ResponseBody
-    public List<BoardDto> getBoardList(HttpServletRequest request, HttpServletResponse response, BoardForm boardForm) throws Exception {
- 
-        List<BoardDto> boardDtoList = boardService.getBoardList(boardForm);
- 
-        return boardDtoList;
-    }
+    public ResultUtil getBoardList(HttpServletRequest request, HttpServletResponse response, BoardForm boardForm) throws Exception {
+
+		ResultUtil resultUtils = boardService.getBoardList(boardForm);
+
+		return resultUtils;
+	}
     
     /** 게시판 - 상세 페이지 이동 */
     @RequestMapping( value = "/boardDetail")
@@ -98,4 +97,21 @@ public class BoardController {
         
         return boardDto;
     }
+    
+    /** 게시판 - 답글 페이지 이동 */
+	@RequestMapping(value = "/boardReply")
+	public String boardReply(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		return "board/boardReply";
+	}
+
+	/** 게시판 - 답글 등록 */
+	@RequestMapping(value = "/insertBoardReply")
+	@ResponseBody
+	public BoardDto insertBoardReply(HttpServletRequest request, HttpServletResponse response, BoardForm boardForm) throws Exception {
+
+		BoardDto boardDto = boardService.insertBoardReply(boardForm);
+
+		return boardDto;
+	}
 }
